@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "191251944607",
+    "project_id": "cmsd-1b8c4",
+    "storage_bucket": "cmsd-1b8c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191251944607:android:7eada5fb1886db13583eaa",
+        "android_client_info": {
+          "package_name": "com.example.cmsd_home"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3HQEGVC4PSuHI34qscVQxOEwXQ_FYGSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
