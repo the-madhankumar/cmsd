@@ -1,9 +1,9 @@
+import 'package:cmsd_home/config/auth_page.dart';
 import 'package:cmsd_home/config/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart'; 
 import 'package:cmsd_home/config/palette.dart';
+import 'package:cmsd_home/config/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({super.key});
@@ -14,7 +14,7 @@ class LoginSignupScreen extends StatefulWidget {
 }
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
-  bool isSignupScreen = true;
+  bool isSignupScreen = false;
   bool isMale = true;
   bool isRememberMe = false;
   bool _acceptedTerms = false;
@@ -22,11 +22,34 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   final emailCont = TextEditingController();
   final passwordCont = TextEditingController();
   final email = TextEditingController();
-  final pass = TextEditingController();
+  final pass1 = TextEditingController();
+  final pass2 = TextEditingController();
   final userNamme = TextEditingController();
 
+  void signUserUp() async{
+    if(pass1.text == pass2.text && _acceptedTerms){
+      try {
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email.text,
+          password: pass1.text,
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
+      }
+    }else{
+      print("Password doesn't match!");
+    }
+    
+  }
+
   void signUserIn() async{
-    print(passwordCont.text + "heloo");
+    print(passwordCont.text);
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailCont.text,
@@ -107,7 +130,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 700),
               curve: Curves.bounceInOut,
-              height: isSignupScreen ? 440 : 250,
+              height: isSignupScreen ? 490 : 250,
               padding: const EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width - 40,
               margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -193,7 +216,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           buildBottomHalfContainer(false),
           // Bottom buttons
           Positioned(
-            top: MediaQuery.of(context).size.height - 150,
+            top: MediaQuery.of(context).size.height - 180,
             right: 0,
             left: 0,
             child: Column(
@@ -204,8 +227,14 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Logo(Logos.facebook_f),
-                      Logo(Logos.google),
+                      SquareTile(
+                        onTap: () => AuthService().signInWithGoogle(),
+                        imagePath: 'assets/google.png',
+                      ),
+                      SquareTile(
+                        onTap:() => AuthService().signInWithFacebook(),
+                        imagePath: 'assets/facebook.png',
+                      ),
                     ],
                   ),
                 )
@@ -222,8 +251,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       margin: const EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          buildTextField(icon: Icons.mail_outline,hintText: "email",ispassword: false,isemail: true,controller: emailCont),
-          buildTextField(icon: const IconData(0xf1ac, fontFamily: 'MaterialIcons'),hintText: "password",ispassword: true,isemail: false,controller: passwordCont),
+          buildTextField(icon: Icons.mail_outline,hintText: "E-mail",ispassword: false,isemail: true,controller: emailCont),
+          buildTextField(icon: const IconData(0xf1ac, fontFamily: 'MaterialIcons'),hintText: "Password",ispassword: true,isemail: false,controller: passwordCont),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -330,86 +359,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       child: Column(
         children: [
           buildTextField(icon: const IconData(0xf1ac, fontFamily: 'MaterialIcons'),hintText: "User Name",ispassword: false,isemail: false,controller: userNamme,),
-          buildTextField(icon: const IconData(0xe3c4, fontFamily: 'MaterialIcons'),hintText: "email",ispassword: false,isemail: true,controller: email,),
-          buildTextField(icon: const IconData(0xe3b1, fontFamily: 'MaterialIcons'),hintText: "password",ispassword: true,isemail: false,controller: pass,),
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isMale = true;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                            color: isMale
-                                ? Palette.textColor2
-                                : Colors.transparent,
-                            border: Border.all(
-                                width: 1,
-                                color: isMale
-                                    ? Colors.transparent
-                                    : Palette.textColor1),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Icon(
-                          const IconData(0xf1ac, fontFamily: 'MaterialIcons'),
-                          color: isMale ? Colors.white : Palette.iconColor,
-                        ),
-                      ),
-                      const Text(
-                        "Male",
-                        style: TextStyle(color: Palette.textColor1),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  width: 30,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isMale = false;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                            color: isMale
-                                ? Colors.transparent
-                                : Palette.textColor2,
-                            border: Border.all(
-                                width: 1,
-                                color: isMale
-                                    ? Palette.textColor1
-                                    : Colors.transparent),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Icon(
-                          const IconData(0xf1ac, fontFamily: 'MaterialIcons'),
-                          color: isMale ? Palette.iconColor : Colors.white,
-                        ),
-                      ),
-                      const Text(
-                        "Female",
-                        style: TextStyle(color: Palette.textColor1),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          buildTextField(icon: const IconData(0xe3c4, fontFamily: 'MaterialIcons'),hintText: "E-mail",ispassword: false,isemail: true,controller: email,),
+          buildTextField(icon: const IconData(0xe3b1, fontFamily: 'MaterialIcons'),hintText: "Set password",ispassword: true,isemail: false,controller: pass1,),
+          buildTextField(icon: const IconData(0xe3b1, fontFamily: 'MaterialIcons'),hintText: "Confirm password",ispassword: true,isemail: false,controller: pass2,),
           Container(
             width: 500,
             margin: const EdgeInsets.only(top: 20),
@@ -430,7 +382,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -510,12 +462,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 700),
       curve: Curves.bounceInOut,
-      top: isSignupScreen ? 590 : 430,
+      top: isSignupScreen ? 640 : 430,
       right: 0,
       left: 0,
       child: Center(
         child: GestureDetector(
-          onTap: isSignupScreen ? signUserIn : signUserIn,
+          onTap: isSignupScreen ? signUserUp : signUserIn,
           child: Container(
             height: 90,
             width: 90,
