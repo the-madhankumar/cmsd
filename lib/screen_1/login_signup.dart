@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cmsd_home/config/palette.dart';
 import 'package:cmsd_home/config/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({super.key});
@@ -26,6 +27,43 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   final pass2 = TextEditingController();
   final userNamme = TextEditingController();
 
+  @override
+  void initState(){
+    super.initState();
+    _checkWifiStatus();
+  }
+  Future<bool> checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    return connectivityResult != ConnectivityResult.none;
+  }
+
+  Future<void> _checkWifiStatus() async {
+    bool isEnabled = await checkInternetConnection();
+    if (!isEnabled) {
+      _askUserToEnableWifi();
+    }
+  }
+
+  Future<void> _askUserToEnableWifi() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Internet not available!'),
+          content: const Text(
+              'Please turn on Wifi/Mobile data to continue or you can still acccess your history.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   void signUserUp() async{
     if(pass1.text == pass2.text && _acceptedTerms){
       try {
@@ -230,10 +268,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       SquareTile(
                         onTap: () => AuthService().signInWithGoogle(),
                         imagePath: 'assets/google.png',
-                      ),
-                      SquareTile(
-                        onTap:() => AuthService().signInWithFacebook(),
-                        imagePath: 'assets/facebook.png',
                       ),
                     ],
                   ),

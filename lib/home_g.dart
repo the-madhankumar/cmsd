@@ -1,3 +1,4 @@
+import 'package:cmsd_home/screen_1/login_auth.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -47,6 +48,7 @@ class HomePage_1 extends StatelessWidget {
         title: 'About', icon: Icons.info, page: const AboutDetailsPage()),
     DrawerItem(
         title: 'Source', icon: Icons.code, page: const SourceDetailsPage()),
+    DrawerItem(title: 'Sign out', icon: Icons.logout, page: const SignOut()),
   ];
 
   HomePage_1({super.key});
@@ -99,16 +101,8 @@ class HomePage_1 extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Hero(
-            tag: 'appBarIcon',
-            child: Image.asset(
-              'assets/images/lo.png',
-              fit: BoxFit.cover,
-              height: 40,
-            ),
-          ),
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0),
         ),
         backgroundColor: Colors.blue,
       ),
@@ -124,7 +118,7 @@ class HomePage_1 extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Image.asset(
-                    'assets/images/logo.png',
+                    'assets/images/apple.png',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -984,7 +978,7 @@ class ProfilePage extends StatelessWidget {
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(
-                        'assets/images/profile.png'), // Replace with your image asset
+                        'assets/images/apple.png'), // Replace with your image asset
                   ),
                   SizedBox(height: 10),
                   Text(

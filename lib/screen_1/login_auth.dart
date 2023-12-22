@@ -4,9 +4,14 @@ import 'package:cmsd_home/home_g.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 @override
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
+  @override
+  State<AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,5 +26,21 @@ class AuthPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+@override
+class SignOut extends StatelessWidget {
+  const SignOut({super.key});
+  
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+    print("out");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    signUserOut();
+    return const LoginSignupScreen();
   }
 }
