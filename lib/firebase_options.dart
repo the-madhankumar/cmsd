@@ -51,6 +51,8 @@ class DefaultFirebaseOptions {
     authDomain: 'cmsd-1b8c4.firebaseapp.com',
     storageBucket: 'cmsd-1b8c4.appspot.com',
     measurementId: 'G-K1K8C29RB4',
+    databaseURL:
+        'https://cmsd-1b8c4-default-rtdb.europe-west1.firebasedatabase.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -59,6 +61,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '191251944607',
     projectId: 'cmsd-1b8c4',
     storageBucket: 'cmsd-1b8c4.appspot.com',
+    databaseURL:
+        'https://cmsd-1b8c4-default-rtdb.europe-west1.firebasedatabase.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -68,6 +72,8 @@ class DefaultFirebaseOptions {
     projectId: 'cmsd-1b8c4',
     storageBucket: 'cmsd-1b8c4.appspot.com',
     iosBundleId: 'com.example.cmsdHome',
+    databaseURL:
+        'https://cmsd-1b8c4-default-rtdb.europe-west1.firebasedatabase.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -77,5 +83,7 @@ class DefaultFirebaseOptions {
     projectId: 'cmsd-1b8c4',
     storageBucket: 'cmsd-1b8c4.appspot.com',
     iosBundleId: 'com.example.cmsdHome.RunnerTests',
+    databaseURL:
+        'https://cmsd-1b8c4-default-rtdb.europe-west1.firebasedatabase.app',
   );
 }
