@@ -48,6 +48,8 @@ dependencies:
   firebase_database: ^10.3.8
   open_settings: ^2.0.2
   permission_handler: ^11.1.0
+  percent_indicator: ^4.2.3
+
 
 dev_dependencies:
   flutter_test:

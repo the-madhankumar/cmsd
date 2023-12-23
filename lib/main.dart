@@ -1,4 +1,4 @@
-import 'package:cmsd_home/screen_1/login_auth.dart';
+import 'package:cmsd_home/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: AuthPage(),
+      home: Loading(),
     );
   }
 }

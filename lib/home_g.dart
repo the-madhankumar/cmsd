@@ -1,3 +1,4 @@
+import 'package:cmsd_home/screen_1/login_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
@@ -15,17 +16,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Soil Tester',
       theme: ThemeData(
-        primarySwatch: const MaterialColor(0xFF2196F3, <int, Color>{
-          50: Colors.blue,
-          100: Colors.blue,
-          200: Colors.blue,
-          300: Colors.blue,
-          400: Colors.blue,
-          500: Colors.blue,
-          600: Colors.blue,
-          700: Colors.blue,
-          800: Colors.blue,
-          900: Colors.blue
+        primarySwatch: const MaterialColor(0xFFFFFF, <int, Color>{
+          50: Colors.white,
+          100: Colors.white,
+          200: Colors.white,
+          300: Colors.white,
+          400: Colors.white,
+          500: Colors.white,
+          600: Colors.white,
+          700: Colors.white,
+          800: Colors.white,
+          900: Colors.white
         }),
       ),
       home: HomePage_1(),
@@ -33,29 +34,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class DrawerItem {
-  final String title;
-  final IconData icon;
-  final Widget page;
-
-  DrawerItem({required this.title, required this.icon, required this.page});
-}
-
 // ignore: camel_case_types
 class HomePage_1 extends StatelessWidget {
   final List<DrawerItem> drawerItems = [
-    DrawerItem(title: 'Profile', icon: Icons.person, page: const ProfilePage()),
-    DrawerItem(title: 'About', icon: Icons.info, page: const AboutDetailsPage()),
-    DrawerItem(title: 'Add Device', icon: Icons.code, page: const AddDevicePage()),
+    const DrawerItem(title: 'Profile', icon: Icons.person, page: ProfilePage()),
+    const DrawerItem(
+        title: 'About', icon: Icons.info, page: AboutDetailsPage()),
+    const DrawerItem(
+        title: 'Add Device', icon: Icons.code, page: AddDevicePage()),
   ];
 
-  HomePage_1({super.key});
+  HomePage_1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      endDrawer: Drawer(
+      appBar: AppBar(
+        title: const Hero(
+          tag: 'appBarTitle',
+          child: Text(
+            'Soil Tester Home',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 240, 241, 241),
+        actions: [],
+      ),
+      drawer: Drawer(
         child: ListView(
           children: <Widget>[
             const SizedBox(
@@ -89,20 +96,6 @@ class HomePage_1 extends StatelessWidget {
               ),
           ],
         ),
-      ),
-      appBar: AppBar(
-        title: const Hero(
-          tag: 'appBarTitle',
-          child: Text(
-            'Soil Tester Home',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        centerTitle: true,
-        leading: const Padding(
-          padding: EdgeInsets.all(8.0),
-        ),
-        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(
@@ -239,6 +232,15 @@ class HomePage_1 extends StatelessWidget {
       ),
     );
   }
+}
+
+class DrawerItem {
+  final String title;
+  final IconData icon;
+  final Widget page;
+
+  const DrawerItem(
+      {required this.title, required this.icon, required this.page});
 }
 
 class ElementsPage extends StatelessWidget {
@@ -709,7 +711,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
               ),
             ),
             const SizedBox(height: 16),
-            Text("Enter the WIFI Details:"),
+            const Text("Enter the WIFI Details:"),
             TextField(
               controller: _ssidController,
               decoration: const InputDecoration(labelText: 'Enter Wifi Name'),
