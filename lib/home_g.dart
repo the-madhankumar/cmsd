@@ -1,4 +1,4 @@
-import 'package:cmsd_home/screen_1/login_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:flutter_bluetooth_seria_changed/flutter_bluetooth_serial.dart';
@@ -45,11 +45,8 @@ class DrawerItem {
 class HomePage_1 extends StatelessWidget {
   final List<DrawerItem> drawerItems = [
     DrawerItem(title: 'Profile', icon: Icons.person, page: const ProfilePage()),
-    DrawerItem(
-        title: 'About', icon: Icons.info, page: const AboutDetailsPage()),
-    DrawerItem(
-        title: 'Add Device', icon: Icons.code, page: const AddDevicePage()),
-    DrawerItem(title: 'Sign out', icon: Icons.logout, page: const SignOut()),
+    DrawerItem(title: 'About', icon: Icons.info, page: const AboutDetailsPage()),
+    DrawerItem(title: 'Add Device', icon: Icons.code, page: const AddDevicePage()),
   ];
 
   HomePage_1({super.key});
@@ -828,6 +825,11 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
   int colorIndex = 0;
   late List<Color> themeColors;
 
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+    print("out");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -889,6 +891,11 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               leading: const Icon(Icons.color_lens),
               onTap: _changeTheme,
             ),
+            ListTile(
+              title: const Text('Sign Out'),
+              leading: const Icon(Icons.logout),
+              onTap: signUserOut,
+            )
           ],
         ),
       ),

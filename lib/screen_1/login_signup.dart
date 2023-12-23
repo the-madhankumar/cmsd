@@ -64,6 +64,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       },
     );
   }
+  
   void signUserUp() async{
     if(pass1.text == pass2.text && _acceptedTerms){
       try {
@@ -87,7 +88,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   }
 
   void signUserIn() async{
-    print(passwordCont.text);
+    print(emailCont.text);
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailCont.text,
@@ -168,7 +169,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 700),
               curve: Curves.bounceInOut,
-              height: isSignupScreen ? 490 : 250,
+              height: isSignupScreen ? 440 : 250,
               padding: const EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width - 40,
               margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -254,7 +255,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
           buildBottomHalfContainer(false),
           // Bottom buttons
           Positioned(
-            top: MediaQuery.of(context).size.height - 180,
+            top: MediaQuery.of(context).size.height - 130,
             right: 0,
             left: 0,
             child: Column(
@@ -496,7 +497,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return AnimatedPositioned(
       duration: const Duration(milliseconds: 700),
       curve: Curves.bounceInOut,
-      top: isSignupScreen ? 640 : 430,
+      top: isSignupScreen ? 595 : 435,
       right: 0,
       left: 0,
       child: Center(
