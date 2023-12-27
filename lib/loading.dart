@@ -40,28 +40,33 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 174, 0), // Background color
+      backgroundColor:
+          const Color.fromARGB(255, 255, 174, 0), // Background color
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 10),
+              // Logo or App Name could be added here for a more professional look
+              const SizedBox(height: 20),
               Container(
                 alignment: Alignment.center,
                 child: CircularPercentIndicator(
                   animation: true,
                   animationDuration: 3500,
-                  radius: 40,
-                  lineWidth: 7,
+                  radius:
+                      80, // Increased the radius for a larger loading indicator
+                  lineWidth:
+                      10, // Increased the line width for better visibility
                   percent: 1.0,
-                  progressColor: const Color.fromARGB(255, 255, 69, 0), // Orange color
-                  backgroundColor: const Color.fromARGB(255, 255, 255, 255), // White color
+                  progressColor:
+                      const Color.fromARGB(255, 255, 69, 0), // Orange color
+                  backgroundColor: Colors.white, // White color background
                   circularStrokeCap: CircularStrokeCap.round,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               AnimatedBuilder(
                 animation: _controller,
                 builder: (context, child) {
@@ -69,7 +74,7 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
                   final List<Widget> dots = List.generate(5, (index) {
                     return Text(
                       index < dotCount ? '.   ' : '   ',
-                      style: const TextStyle(fontSize: 35, color: Colors.white),
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
                     );
                   });
                   return Row(

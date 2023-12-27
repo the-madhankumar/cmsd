@@ -1,4 +1,3 @@
-import 'package:cmsd_home/screen_1/login_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
@@ -29,22 +28,21 @@ class MyApp extends StatelessWidget {
           900: Colors.white
         }),
       ),
-      home: HomePage_1(),
+      home: HomePage(),
     );
   }
 }
 
 // ignore: camel_case_types
-class HomePage_1 extends StatelessWidget {
+class HomePage extends StatelessWidget {
   final List<DrawerItem> drawerItems = [
     const DrawerItem(title: 'Profile', icon: Icons.person, page: ProfilePage()),
-    const DrawerItem(
-        title: 'About', icon: Icons.info, page: AboutDetailsPage()),
+    const DrawerItem(title: 'History', icon: Icons.info, page: HistoryPage()),
     const DrawerItem(
         title: 'Add Device', icon: Icons.code, page: AddDevicePage()),
   ];
 
-  HomePage_1({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +107,7 @@ class HomePage_1 extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Image.asset(
-                    'assets/images/apple.png',
+                    'assets/images/CMSD.png',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -191,7 +189,7 @@ class HomePage_1 extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage_1(),
+                  builder: (context) => HomePage(),
                 ),
               );
               break;
@@ -215,7 +213,7 @@ class HomePage_1 extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AboutDetailsPage(),
+                  builder: (context) => const HistoryPage(),
                 ),
               );
               break;
@@ -408,7 +406,7 @@ class ElementsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage_1(),
+                  builder: (context) => HomePage(),
                 ),
               );
               break;
@@ -427,7 +425,7 @@ class ElementsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AboutDetailsPage(),
+                  builder: (context) => const HistoryPage(),
                 ),
               );
               break;
@@ -726,7 +724,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
               onPressed: () {
                 String ssid = _ssidController.text;
                 String password = _passwordController.text;
-                _sendData('$ssid:$password$user');
+                _sendData('$ssid:$password');
               },
               child: const Text('Send WiFi Credentials'),
             ),
@@ -766,7 +764,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage_1(),
+                  builder: (context) => HomePage(),
                 ),
               );
               break;
@@ -785,7 +783,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AboutDetailsPage(),
+                  builder: (context) => const HistoryPage(),
                 ),
               );
               break;
@@ -936,7 +934,7 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage_1(),
+                  builder: (context) => HomePage(),
                 ),
               );
               break;
@@ -960,12 +958,12 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AboutDetailsPage(),
+                  builder: (context) => const HistoryPage(),
                 ),
               );
               break;
             case 4:
-              // You are already on the AboutDetailsPage, no need to navigate again.
+              // You are already on the HistoryPage, no need to navigate again.
               break;
           }
         },
@@ -981,8 +979,8 @@ void _changeTheme(BuildContext context) {
   pageState._changeTheme();
 }
 
-class AboutDetailsPage extends StatelessWidget {
-  const AboutDetailsPage({super.key});
+class HistoryPage extends StatelessWidget {
+  const HistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -990,7 +988,7 @@ class AboutDetailsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'About Details',
+          'History',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -999,10 +997,6 @@ class AboutDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Search here.',
-              style: TextStyle(fontSize: 18.0),
-            ),
             const SizedBox(height: 16.0),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -1067,7 +1061,7 @@ class AboutDetailsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage_1(),
+                  builder: (context) => HomePage(),
                 ),
               );
               break;
@@ -1129,7 +1123,7 @@ class ProfilePage extends StatelessWidget {
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(
-                        'assets/images/apple.png'), // Replace with your image asset
+                        'assets/images/profile.png'), // Replace with your image asset
                   ),
                   SizedBox(height: 10),
                   Text(
