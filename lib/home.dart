@@ -1,8 +1,10 @@
+import 'package:cmsd_home/localization/locales.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:flutter_bluetooth_seria_changed/flutter_bluetooth_serial.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:lottie/lottie.dart';
@@ -14,7 +16,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Soil Tester',
       theme: ThemeData(
         primarySwatch: const MaterialColor(0xFFFFFF, <int, Color>{
           50: Colors.white,
@@ -35,26 +36,33 @@ class MyApp extends StatelessWidget {
 }
 
 // ignore: camel_case_types, must_be_immutable
-class HomePage extends StatelessWidget {
-  bool connected = true;
-  bool isConnectedPopupShown = false;
-  final List<DrawerItem> drawerItems = [
-    const DrawerItem(title: 'Profile', icon: Icons.person, page: ProfilePage()),
-    const DrawerItem(title: 'History', icon: Icons.info, page: HistoryPage()),
-    const DrawerItem(
-        title: 'Add Device', icon: Icons.code, page: AddDevicePage()),
-  ];
+class HomePage extends StatefulWidget {
 
   HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool connected = true;
+
+  bool isConnectedPopupShown = false;
+
+  final List<DrawerItem> drawerItems = [
+    const DrawerItem(title: LocaleData.profile, icon: Icons.person, page: ProfilePage()),
+    const DrawerItem(title: LocaleData.history, icon: Icons.info, page: HistoryPage()),
+    const DrawerItem(title: LocaleData.adddevice, icon: Icons.code, page: AddDevicePage()),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Soil tester',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          LocaleData.title.getString(context),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:
@@ -63,13 +71,13 @@ class HomePage extends StatelessWidget {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
+            DrawerHeader(
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(246, 240, 237, 237),
               ),
               child: Text(
-                'Menu',
-                style: TextStyle(
+                LocaleData.info8.getString(context),
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                 ),
@@ -77,7 +85,7 @@ class HomePage extends StatelessWidget {
             ),
             for (var item in drawerItems)
               ListTile(
-                title: Text(item.title),
+                title: Text(item.title.getString(context)),
                 leading: Icon(item.icon),
                 onTap: () {
                   Navigator.pop(context);
@@ -287,9 +295,9 @@ class ElementsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Elements Page',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          LocaleData.info3.getString(context),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:
@@ -317,10 +325,10 @@ class ElementsPage extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'Section 1',
-                style: TextStyle(
+                LocaleData.info4.getString(context),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -347,10 +355,10 @@ class ElementsPage extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'Section 2',
-                style: TextStyle(
+                LocaleData.info5.getString(context),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -377,10 +385,10 @@ class ElementsPage extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'Section 3',
-                style: TextStyle(
+                LocaleData.info6.getString(context),
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -692,9 +700,9 @@ class _AddDevicePageState extends State<AddDevicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Device',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          LocaleData.adddevice.getString(context),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:
@@ -859,9 +867,9 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Home',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          LocaleData.info9.getString(context),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:
@@ -872,13 +880,13 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Settings',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            Text(
+              LocaleData.info7.getString(context),
+              style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16.0),
             ListTile(
-              title: const Text('Account'),
+              title: Text(LocaleData.setbtn1.getString(context)),
               subtitle: const Text('Manage your account settings'),
               leading: const Icon(Icons.account_circle),
               onTap: () {
@@ -890,13 +898,38 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
                 );
               },
             ),
-            const ListTile(
-              title: Text('Notifications'),
-              subtitle: Text('Configure app notifications'),
-              leading: Icon(Icons.notifications),
+            ListTile(
+              title: Text(LocaleData.setbtn2.getString(context)),
+              subtitle: const Text('Configure app notifications'),
+              leading: const Icon(Icons.notifications),
             ),
             ListTile(
-              title: const Text('Sign Out'),
+              title: Text(LocaleData.setbtn3.getString(context)),
+              subtitle: const Text('Configure app languages'),
+              leading: const Icon(Icons.language),
+              trailing: DropdownButton(
+                value: _currentLocale, // Set the initially selected option
+                items: const [
+                  DropdownMenuItem(
+                    value: "en",
+                    child: Text("English")
+                  ),
+                  DropdownMenuItem(
+                    value: "ta",
+                    child: Text("தமிழ்")
+                  ),
+                  DropdownMenuItem(
+                    value: "hi",
+                    child: Text("हिंदी")
+                  )
+                ], 
+                onChanged: (String? value) {
+                  _setLocale(value);
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(LocaleData.setbtn4.getString(context)),
               leading: const Icon(Icons.logout),
               onTap: signUserOut,
             )
@@ -974,6 +1007,33 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
       ),
     );
   }
+
+  late  FlutterLocalization _flutterLocalization;
+  late String _currentLocale = "en";
+
+  @override
+  void initState() {
+    super.initState();
+    _flutterLocalization = FlutterLocalization.instance;
+    _currentLocale = _flutterLocalization.currentLocale!.languageCode;
+    //print(_currentLocale);
+  }
+
+  void _setLocale(String? value) {
+    if (value == null) return;
+    if(value == "en"){
+      _flutterLocalization.translate("en");
+    } else if(value == "hi"){
+      _flutterLocalization.translate("hi");
+    } else if(value == "ta"){
+      _flutterLocalization.translate("ta");
+    } else{
+      return;
+    }
+    setState(() {
+      _currentLocale = value;
+    });
+  }
 }
 
 class HistoryPage extends StatelessWidget {
@@ -984,9 +1044,9 @@ class HistoryPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          LocaleData.history.getString(context),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:

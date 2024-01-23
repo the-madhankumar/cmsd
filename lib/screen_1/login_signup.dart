@@ -1,10 +1,12 @@
 import 'package:cmsd_home/config/auth_page.dart';
 import 'package:cmsd_home/config/text_field.dart';
+import 'package:cmsd_home/localization/locales.dart';
 import 'package:flutter/material.dart';
 import 'package:cmsd_home/config/palette.dart';
 import 'package:cmsd_home/config/square_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({super.key});
@@ -49,9 +51,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Internet not available!'),
-          content: const Text(
-              'Please turn on Wifi/Mobile data to continue or you can still acccess your history.'),
+          title: Text(LocaleData.info1.getString(context)),
+          content: Text(LocaleData.info2.getString(context)),
           actions: <Widget>[
             TextButton(
               onPressed: () {
