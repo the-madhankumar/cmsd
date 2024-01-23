@@ -1,6 +1,6 @@
 import 'package:cmsd_home/screen_1/login_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:lottie/lottie.dart';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -40,52 +40,66 @@ class _LoadingState extends State<Loading> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          const Color.fromARGB(255, 255, 174, 0), // Background color
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo or App Name could be added here for a more professional look
-              const SizedBox(height: 20),
-              Container(
-                alignment: Alignment.center,
-                child: CircularPercentIndicator(
-                  animation: true,
-                  animationDuration: 3500,
-                  radius:
-                      80, // Increased the radius for a larger loading indicator
-                  lineWidth:
-                      10, // Increased the line width for better visibility
-                  percent: 1.0,
-                  progressColor:
-                      const Color.fromARGB(255, 255, 69, 0), // Orange color
-                  backgroundColor: Colors.white, // White color background
-                  circularStrokeCap: CircularStrokeCap.round,
+      backgroundColor: Color.fromARGB(246, 240, 237, 237).withOpacity(0.5),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Container(
+                  margin: const EdgeInsets.only(right: 90.0),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Lottie.network(
+                    'https://lottie.host/9be4b262-7abf-4ccb-9e03-497bf91867e5/rvwAugxJFj.json',
+                    height: 250,
+                    width: 250,
+                    fit: BoxFit.cover,
+                    repeat: true,
+                    controller: _controller,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  final int dotCount = (_controller.value * 5).toInt() + 1;
-                  final List<Widget> dots = List.generate(5, (index) {
-                    return Text(
-                      index < dotCount ? '.   ' : '   ',
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                const SizedBox(height: 30),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    final int dotCount = (_controller.value * 5).toInt() + 1;
+                    final List<Widget> dots = List.generate(5, (index) {
+                      return Text(
+                        index < dotCount ? '.   ' : '   ',
+                        style: const TextStyle(
+                            fontSize: 20, color: Color.fromARGB(255, 0, 0, 0)),
+                      );
+                    });
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: dots,
                     );
-                  });
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: dots,
-                  );
-                },
-              ),
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
+          Container(
+            height: 50,
+            color: Color.fromARGB(255, 0, 0, 0),
+            alignment: Alignment.center,
+            child: const Text(
+              'CMSD Agri Tech',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

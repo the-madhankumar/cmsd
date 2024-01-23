@@ -5,6 +5,7 @@ import 'package:flutter_bluetooth_seria_changed/flutter_bluetooth_serial.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:lottie/lottie.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
 
 // ignore: camel_case_types
 class HomePage extends StatelessWidget {
+  bool connected = true;
+  bool isConnectedPopupShown = false;
   final List<DrawerItem> drawerItems = [
     const DrawerItem(title: 'Profile', icon: Icons.person, page: ProfilePage()),
     const DrawerItem(title: 'History', icon: Icons.info, page: HistoryPage()),
@@ -49,32 +52,26 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Hero(
-          tag: 'appBarTitle',
-          child: Text(
-            'Soil Tester Home',
-            style: TextStyle(color: Colors.black),
-          ),
+        title: const Text(
+          'Soil tester',
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 240, 241, 241),
-        actions: [],
+        backgroundColor:
+            const Color.fromARGB(246, 240, 237, 237).withOpacity(0.5),
       ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            const SizedBox(
-              height: 70.0,
-              child: DrawerHeader(
-                decoration: BoxDecoration(
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(246, 240, 237, 237),
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
                   color: Colors.black,
-                ),
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
+                  fontSize: 24,
                 ),
               ),
             ),
@@ -95,64 +92,105 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
               child: Container(
+                margin: const EdgeInsets.only(left: 10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
-                  child: Image.asset(
-                    'assets/images/CMSD.png',
-                    fit: BoxFit.cover,
-                  ),
+                  child: connected
+                      ? Container(
+                          margin: const EdgeInsets.only(
+                              top: 20.0), // Adjust the top margin
+                          child: Opacity(
+                            opacity:
+                                0.5, // Set the desired opacity (0.5 for 50%)
+                            child: Column(
+                              children: [
+                                Lottie.network(
+                                  'https://lottie.host/8cb372e2-6d74-4086-9ec8-cb6d2234d0ab/qRwKy9dAzj.json',
+                                  fit: BoxFit.cover,
+                                ),
+                                const SizedBox(
+                                    height:
+                                        40), // Add space between image and text
+                                const Text(
+                                  'Connected',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.only(
+                              top: 20.0), // Adjust the top margin
+                          child: Opacity(
+                            opacity:
+                                0.5, // Set the desired opacity (0.5 for 50%)
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/notcon.png',
+                                  fit: BoxFit.cover,
+                                  height: 250, // Adjust the height as needed
+                                  width: 350, // Adjust the width as needed
+                                ),
+                                const SizedBox(
+                                    height:
+                                        40), // Add space between image and text
+                                const Text(
+                                  'Device Not Connected',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                 ),
               ),
             ),
-            Flexible(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15.0),
-                  border: Border.all(
-                    width: 2.0,
-                    color: Colors.transparent,
-                  ),
+          ),
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                border: Border.all(
+                  width: 2.0,
+                  color: Colors.transparent,
                 ),
-                foregroundDecoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      const Color.fromARGB(129, 255, 255, 255).withOpacity(0.5),
-                      const Color.fromARGB(124, 255, 255, 255).withOpacity(0.5),
-                    ],
-                  ),
-                ),
-                child: const Center(
-                  child: Text(
-                    '"Farmers transform soil into life\'s canvas, painted with dedication, resilience, and bountiful harvests."',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      fontFamily: 'RobotoSerif',
-                      color: Color.fromARGB(255, 11, 11, 11),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+              ),
+              foregroundDecoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color.fromARGB(129, 255, 255, 255).withOpacity(0.5),
+                    const Color.fromARGB(124, 255, 255, 255).withOpacity(0.5),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -178,7 +216,7 @@ class HomePage extends StatelessWidget {
             label: "Settings",
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 16, 129, 182),
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: Colors.grey,
         currentIndex: 0,
         showSelectedLabels: true,
@@ -186,7 +224,8 @@ class HomePage extends StatelessWidget {
         onTap: (index) {
           switch (index) {
             case 0:
-              Navigator.push(
+              // Use pushReplacement instead of push to prevent stacking pages
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => HomePage(),
@@ -194,7 +233,7 @@ class HomePage extends StatelessWidget {
               );
               break;
             case 1:
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ElementsPage(),
@@ -202,7 +241,7 @@ class HomePage extends StatelessWidget {
               );
               break;
             case 2:
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const AddDevicePage(),
@@ -210,7 +249,7 @@ class HomePage extends StatelessWidget {
               );
               break;
             case 3:
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HistoryPage(),
@@ -218,7 +257,7 @@ class HomePage extends StatelessWidget {
               );
               break;
             case 4:
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomeDetailsPage(),
@@ -242,9 +281,7 @@ class DrawerItem {
 }
 
 class ElementsPage extends StatelessWidget {
-  final List<String> boxData = List.generate(18, (index) => 'Box ${index + 1}');
-
-  ElementsPage({super.key});
+  ElementsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -255,117 +292,98 @@ class ElementsPage extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor:
+            const Color.fromARGB(246, 240, 237, 237).withOpacity(0.5),
       ),
       body: Column(
         children: [
-          Expanded(
-            child: Scrollbar(
-              thumbVisibility: true,
-              child: ListView.builder(
-                itemCount: boxData.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailPage(boxData[index]),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 150,
-                      margin: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(
-                              0,
-                              3,
-                            ),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.all(8),
-                                width: 50,
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 156, 219, 250),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.cloud,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                boxData[index],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(8),
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(8),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailPage(boxData[index]),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Colors.blue,
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'View Details',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+          // First Sectional Box
+          Container(
+            width: double.infinity,
+            height: 150,
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(
+                    0,
+                    3,
+                  ),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Text(
+                'Section 1',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          // Second Sectional Box
+          Container(
+            width: double.infinity,
+            height: 150,
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(
+                    0,
+                    3,
+                  ),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Text(
+                'Section 2',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          // Third Sectional Box
+          Container(
+            width: double.infinity,
+            height: 150,
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(
+                    0,
+                    3,
+                  ),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Text(
+                'Section 3',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
@@ -395,7 +413,7 @@ class ElementsPage extends StatelessWidget {
             label: "Settings",
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 16, 129, 182),
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: Colors.grey,
         currentIndex: 1,
         showSelectedLabels: true,
@@ -674,7 +692,13 @@ class _AddDevicePageState extends State<AddDevicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Device'),
+        title: const Text(
+          'Add Device',
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
+        backgroundColor:
+            const Color.fromARGB(246, 240, 237, 237).withOpacity(0.5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -755,7 +779,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
             label: "Settings",
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 16, 129, 182),
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: const Color.fromARGB(255, 132, 143, 148),
         currentIndex: 2, // Set the initial index here
         onTap: (index) {
@@ -831,31 +855,17 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    themeColors = [
-      Colors.white,
-      Colors.green,
-      Colors.orange,
-      Colors.blue,
-    ];
-  }
-
-  void _changeTheme() {
-    setState(() {
-      colorIndex = (colorIndex + 1) % themeColors.length;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: themeColors[colorIndex],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Home',
           style: TextStyle(color: Colors.black),
         ),
+        centerTitle: true,
+        backgroundColor:
+            const Color.fromARGB(246, 240, 237, 237).withOpacity(0.5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -884,12 +894,6 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               title: Text('Notifications'),
               subtitle: Text('Configure app notifications'),
               leading: Icon(Icons.notifications),
-            ),
-            ListTile(
-              title: const Text('Change Theme'),
-              subtitle: const Text('Change the app theme color'),
-              leading: const Icon(Icons.color_lens),
-              onTap: _changeTheme,
             ),
             ListTile(
               title: const Text('Sign Out'),
@@ -923,7 +927,7 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
             label: "Settings",
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 16, 129, 182),
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: Colors.grey,
         currentIndex: 4,
         showSelectedLabels: true,
@@ -972,13 +976,6 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
   }
 }
 
-// ignore: unused_element
-void _changeTheme(BuildContext context) {
-  _HomeDetailsPageState pageState =
-      context.findAncestorStateOfType<_HomeDetailsPageState>()!;
-  pageState._changeTheme();
-}
-
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
 
@@ -988,9 +985,12 @@ class HistoryPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'History',
+          'Settings',
           style: TextStyle(color: Colors.black),
         ),
+        centerTitle: true,
+        backgroundColor:
+            const Color.fromARGB(246, 240, 237, 237).withOpacity(0.5),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -1050,7 +1050,7 @@ class HistoryPage extends StatelessWidget {
             label: "Settings",
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 16, 129, 182),
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: Colors.grey,
         currentIndex: 3,
         showSelectedLabels: true,
@@ -1115,7 +1115,7 @@ class ProfilePage extends StatelessWidget {
             width: double.infinity,
             height: 200,
             color: const Color.fromARGB(
-                255, 16, 129, 182), // Change the color as needed
+                255, 255, 255, 255), // Change the color as needed
             child: const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1154,7 +1154,7 @@ class ProfilePage extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: Colors.blue,
+            color: const Color.fromARGB(255, 0, 0, 0),
           ),
           const SizedBox(width: 10),
           Column(
@@ -1178,6 +1178,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-// ... (previous imports)
-
