@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class HomePage extends StatelessWidget {
   bool connected = true;
   bool isConnectedPopupShown = false;

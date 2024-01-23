@@ -68,6 +68,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   void signUserUp() async{
     if(pass1.text == pass2.text && _acceptedTerms){
       try {
+        // ignore: unused_local_variable
         final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.text,
           password: pass1.text,
@@ -90,6 +91,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   void signUserIn() async{
     print(emailCont.text);
     try {
+      // ignore: unused_local_variable
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailCont.text,
         password: passwordCont.text
