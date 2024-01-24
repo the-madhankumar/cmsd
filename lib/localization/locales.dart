@@ -1,9 +1,9 @@
 import 'package:flutter_localization/flutter_localization.dart';
 
 const List<MapLocale> LOCALES = [
-  MapLocale("en",LocaleData.EN),
-  MapLocale("hi",LocaleData.HI),
-  MapLocale("ta",LocaleData.TA),
+  MapLocale("en", LocaleData.EN),
+  MapLocale("hi", LocaleData.HI),
+  MapLocale("ta", LocaleData.TA),
 ];
 
 mixin LocaleData {
@@ -32,14 +32,15 @@ mixin LocaleData {
     history: "History",
     adddevice: "Add device",
     info1: 'Internet not available!',
-    info2: 'Please turn on Wifi/Mobile data to continue or you can still acccess your history.',
+    info2:
+        'Please turn on Wifi/Mobile data to continue or you can still acccess your history.',
     info3: 'Elements Page',
     info4: 'Section 1',
     info5: 'Section 2',
     info6: 'Section 3',
     info7: 'Settings',
     info8: 'Menu',
-    info9: 'Home',
+    info9: 'Settings',
     setbtn1: 'Account',
     setbtn2: 'Notifications',
     setbtn3: 'Languages',
@@ -52,7 +53,8 @@ mixin LocaleData {
     history: "इतिहास",
     adddevice: "डिवाइस जोड़ें",
     info1: 'Internet not available!',
-    info2: 'Please turn on Wifi/Mobile data to continue or you can still acccess your history.',
+    info2:
+        'Please turn on Wifi/Mobile data to continue or you can still acccess your history.',
     info3: 'तत्व पृष्ठ',
     info4: 'अनुभाग 1',
     info5: 'अनुभाग 2',
@@ -72,14 +74,15 @@ mixin LocaleData {
     history: "வரலாறு",
     adddevice: "சாதனத்தைச் சேர்",
     info1: 'Internet not available!',
-    info2: 'Please turn on Wifi/Mobile data to continue or you can still acccess your history.',
+    info2:
+        'Please turn on Wifi/Mobile data to continue or you can still acccess your history.',
     info3: 'கூறுகள் பக்கம்',
     info4: 'கூறு 1',
     info5: 'கூறு 2',
     info6: 'கூறு 3',
     info7: 'அமைப்புகள்',
     info8: 'பட்டியல்',
-    info9: 'வீடு',
+    info9: 'அமைப்புகள்',
     setbtn1: 'எண்ணுதல்',
     setbtn2: 'அறிவிக்கைகள்',
     setbtn3: 'Languages',

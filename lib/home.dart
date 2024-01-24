@@ -8,6 +8,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,34 +36,96 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class DrawerItem {
+  final String title;
+  final IconData icon;
+  final Widget page;
+
+  const DrawerItem({
+    required this.title,
+    required this.icon,
+    required this.page,
+  });
+}
+
 // ignore: camel_case_types, must_be_immutable
 class HomePage extends StatefulWidget {
-
-  HomePage({Key? key}) : super(key: key);
-
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   bool connected = true;
 
+  final String popupShownKey = 'popup_shown';
   bool isConnectedPopupShown = false;
 
   final List<DrawerItem> drawerItems = [
-    const DrawerItem(title: LocaleData.profile, icon: Icons.person, page: ProfilePage()),
-    const DrawerItem(title: LocaleData.history, icon: Icons.info, page: HistoryPage()),
-    const DrawerItem(title: LocaleData.adddevice, icon: Icons.code, page: AddDevicePage()),
+    const DrawerItem(title: "Profile", icon: Icons.person, page: ProfilePage()),
+    const DrawerItem(title: "History", icon: Icons.info, page: HistoryPage()),
+    const DrawerItem(
+        title: "Add Device", icon: Icons.code, page: AddDevicePage()),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    checkPopupShown();
+  }
+
+  Future<void> checkPopupShown() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool popupShown = prefs.getBool(popupShownKey) ?? false;
+
+    if (!popupShown) {
+      showConnectedPopup();
+      prefs.setBool(popupShownKey, true);
+    }
+  }
+
+  Future<void> showConnectedPopup() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: 300, // Set the desired width
+            height: 100, // Set the desired height
+            child: const Column(
+              children: [
+                // Removed Lottie animation
+                SizedBox(height: 20),
+                Text(
+                  'Device is connected!',
+                  style: TextStyle(
+                    fontSize: 26,
+                    color: Color.fromARGB(255, 53, 242, 6),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          LocaleData.title.getString(context),
-          style: const TextStyle(color: Colors.black),
+        title: const Text(
+          'App Title',
+          style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:
@@ -71,13 +134,13 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            DrawerHeader(
-              decoration: const BoxDecoration(
+            const DrawerHeader(
+              decoration: BoxDecoration(
                 color: Color.fromARGB(246, 240, 237, 237),
               ),
               child: Text(
-                LocaleData.info8.getString(context),
-                style: const TextStyle(
+                'Menu',
+                style: TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                 ),
@@ -85,7 +148,7 @@ class _HomePageState extends State<HomePage> {
             ),
             for (var item in drawerItems)
               ListTile(
-                title: Text(item.title.getString(context)),
+                title: Text(item.title),
                 leading: Icon(item.icon),
                 onTap: () {
                   Navigator.pop(context);
@@ -114,21 +177,14 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(15.0),
                   child: connected
                       ? Container(
-                          margin: const EdgeInsets.only(
-                              top: 20.0), // Adjust the top margin
-                          child: Opacity(
-                            opacity:
-                                0.5, // Set the desired opacity (0.5 for 50%)
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: const Opacity(
+                            opacity: 0.5,
                             child: Column(
                               children: [
-                                Lottie.network(
-                                  'https://lottie.host/8cb372e2-6d74-4086-9ec8-cb6d2234d0ab/qRwKy9dAzj.json',
-                                  fit: BoxFit.cover,
-                                ),
-                                const SizedBox(
-                                    height:
-                                        40), // Add space between image and text
-                                const Text(
+                                // Removed Lottie animation
+                                SizedBox(height: 40),
+                                Text(
                                   'Connected',
                                   style: TextStyle(
                                     fontSize: 20,
@@ -141,22 +197,18 @@ class _HomePageState extends State<HomePage> {
                           ),
                         )
                       : Container(
-                          margin: const EdgeInsets.only(
-                              top: 20.0), // Adjust the top margin
+                          margin: const EdgeInsets.only(top: 20.0),
                           child: Opacity(
-                            opacity:
-                                0.5, // Set the desired opacity (0.5 for 50%)
+                            opacity: 0.5,
                             child: Column(
                               children: [
                                 Image.asset(
                                   'assets/images/notcon.png',
                                   fit: BoxFit.cover,
-                                  height: 250, // Adjust the height as needed
-                                  width: 350, // Adjust the width as needed
+                                  height: 250,
+                                  width: 350,
                                 ),
-                                const SizedBox(
-                                    height:
-                                        40), // Add space between image and text
+                                const SizedBox(height: 40),
                                 const Text(
                                   'Device Not Connected',
                                   style: TextStyle(
@@ -232,7 +284,6 @@ class _HomePageState extends State<HomePage> {
         onTap: (index) {
           switch (index) {
             case 0:
-              // Use pushReplacement instead of push to prevent stacking pages
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -244,7 +295,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ElementsPage(),
+                  builder: (context) => const ElementsPage(),
                 ),
               );
               break;
@@ -279,17 +330,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class DrawerItem {
-  final String title;
-  final IconData icon;
-  final Widget page;
-
-  const DrawerItem(
-      {required this.title, required this.icon, required this.page});
-}
-
 class ElementsPage extends StatelessWidget {
-  ElementsPage({Key? key}) : super(key: key);
+  const ElementsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -306,92 +348,205 @@ class ElementsPage extends StatelessWidget {
       body: Column(
         children: [
           // First Sectional Box
-          Container(
-            width: double.infinity,
-            height: 150,
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(
-                    0,
-                    3,
+          GestureDetector(
+            onTap: () {
+              // Add your navigation logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              height: 150,
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
                   ),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                LocaleData.info4.getString(context),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    margin: const EdgeInsets.only(left: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'N',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                      width:
+                          0), // Adjust the spacing between the two containers
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Nitrogen',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+
           // Second Sectional Box
-          Container(
-            width: double.infinity,
-            height: 150,
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(
-                    0,
-                    3,
+          GestureDetector(
+            onTap: () {
+              // Add your navigation logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              height: 150,
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
                   ),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                LocaleData.info5.getString(context),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    margin: const EdgeInsets.only(left: 20),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 175, 120, 76),
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'P',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                      width:
+                          10), // Adjust the spacing between the two containers
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Phosphorus',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+
           // Third Sectional Box
-          Container(
-            width: double.infinity,
-            height: 150,
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(
-                    0,
-                    3,
+          GestureDetector(
+            onTap: () {
+              // Add your navigation logic here
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              height: 150,
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
                   ),
-                ),
-              ],
-            ),
-            child: Center(
-              child: Text(
-                LocaleData.info6.getString(context),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    margin: const EdgeInsets.only(left: 20),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 44, 135, 201),
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'K',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                      width:
+                          10), // Adjust the spacing between the two containers
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Pottasium',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -506,8 +661,8 @@ class _AddDevicePageState extends State<AddDevicePage> {
   BluetoothConnection? _bluetoothConnection;
   late final DatabaseReference fireRef;
 
-  TextEditingController _ssidController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ssidController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   _BluetoothScanPageState() {
     fireRef = FirebaseDatabase.instance.ref(user);
@@ -804,7 +959,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ElementsPage(),
+                  builder: (context) => const ElementsPage(),
                 ),
               );
               break;
@@ -882,7 +1037,8 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
           children: [
             Text(
               LocaleData.info7.getString(context),
-              style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16.0),
             ListTile(
@@ -910,19 +1066,10 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               trailing: DropdownButton(
                 value: _currentLocale, // Set the initially selected option
                 items: const [
-                  DropdownMenuItem(
-                    value: "en",
-                    child: Text("English")
-                  ),
-                  DropdownMenuItem(
-                    value: "ta",
-                    child: Text("தமிழ்")
-                  ),
-                  DropdownMenuItem(
-                    value: "hi",
-                    child: Text("हिंदी")
-                  )
-                ], 
+                  DropdownMenuItem(value: "en", child: Text("English")),
+                  DropdownMenuItem(value: "ta", child: Text("தமிழ்")),
+                  DropdownMenuItem(value: "hi", child: Text("हिंदी"))
+                ],
                 onChanged: (String? value) {
                   _setLocale(value);
                 },
@@ -979,7 +1126,7 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ElementsPage(),
+                  builder: (context) => const ElementsPage(),
                 ),
               );
               break;
@@ -1008,7 +1155,7 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
     );
   }
 
-  late  FlutterLocalization _flutterLocalization;
+  late FlutterLocalization _flutterLocalization;
   late String _currentLocale = "en";
 
   @override
@@ -1021,13 +1168,13 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
 
   void _setLocale(String? value) {
     if (value == null) return;
-    if(value == "en"){
+    if (value == "en") {
       _flutterLocalization.translate("en");
-    } else if(value == "hi"){
+    } else if (value == "hi") {
       _flutterLocalization.translate("hi");
-    } else if(value == "ta"){
+    } else if (value == "ta") {
       _flutterLocalization.translate("ta");
-    } else{
+    } else {
       return;
     }
     setState(() {
@@ -1129,7 +1276,7 @@ class HistoryPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ElementsPage(),
+                  builder: (context) => const ElementsPage(),
                 ),
               );
               break;
