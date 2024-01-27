@@ -1,3 +1,6 @@
+import 'package:cmsd_home/charts/nitrogen_chart.dart';
+import 'package:cmsd_home/charts/phosphorous_chart.dart';
+import 'package:cmsd_home/charts/potassium_chart.dart';
 import 'package:cmsd_home/localization/locales.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +10,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:open_settings/open_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyApp extends StatelessWidget {
@@ -124,7 +126,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'App Title',
+          'soil tester',
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -354,7 +356,7 @@ class ElementsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => const nitroChart(),
                 ),
               );
             },
@@ -422,7 +424,7 @@ class ElementsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => const PhosphoChart(),
                 ),
               );
             },
@@ -490,7 +492,7 @@ class ElementsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => const PotassiumChart(),
                 ),
               );
             },
@@ -1023,7 +1025,7 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          LocaleData.info9.getString(context),
+          LocaleData.info7.getString(context),
           style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -1035,12 +1037,6 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              LocaleData.info7.getString(context),
-              style:
-                  const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
             ListTile(
               title: Text(LocaleData.setbtn1.getString(context)),
               subtitle: const Text('Manage your account settings'),
