@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cmsd_home/charts/nitrogen_chart.dart';
 import 'package:cmsd_home/charts/phosphorous_chart.dart';
 import 'package:cmsd_home/charts/potassium_chart.dart';
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
           900: Colors.white
         }),
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
@@ -52,7 +54,10 @@ class DrawerItem {
 
 // ignore: camel_case_types, must_be_immutable
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -63,10 +68,12 @@ class _HomePageState extends State<HomePage> {
   bool isConnectedPopupShown = false;
 
   final List<DrawerItem> drawerItems = [
-    const DrawerItem(title: "Profile", icon: Icons.person, page: ProfilePage()),
-    const DrawerItem(title: "History", icon: Icons.info, page: HistoryPage()),
     const DrawerItem(
-        title: "Add Device", icon: Icons.code, page: AddDevicePage()),
+        title: LocaleData.profile, icon: Icons.person, page: ProfilePage()),
+    const DrawerItem(
+        title: LocaleData.history, icon: Icons.info, page: HistoryPage()),
+    const DrawerItem(
+        title: LocaleData.adddevice, icon: Icons.code, page: AddDevicePage()),
   ];
 
   @override
@@ -90,6 +97,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          // ignore: sized_box_for_whitespace
           content: Container(
             width: 300, // Set the desired width
             height: 100, // Set the desired height
@@ -125,9 +133,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'soil tester',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          LocaleData.title.getString(context),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         backgroundColor:
@@ -136,13 +144,13 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
+            DrawerHeader(
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(246, 240, 237, 237),
               ),
               child: Text(
-                'Menu',
-                style: TextStyle(
+                LocaleData.info8.getString(context),
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                 ),
@@ -150,7 +158,7 @@ class _HomePageState extends State<HomePage> {
             ),
             for (var item in drawerItems)
               ListTile(
-                title: Text(item.title),
+                title: Text(item.title.getString(context)),
                 leading: Icon(item.icon),
                 onTap: () {
                   Navigator.pop(context);
@@ -289,7 +297,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => const HomePage(),
                 ),
               );
               break;
@@ -400,11 +408,11 @@ class ElementsPage extends StatelessWidget {
                   const SizedBox(
                       width:
                           0), // Adjust the spacing between the two containers
-                  const Expanded(
+                  Expanded(
                     child: Center(
                       child: Text(
-                        'Nitrogen',
-                        style: TextStyle(
+                        LocaleData.info4.getString(context),
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -468,11 +476,11 @@ class ElementsPage extends StatelessWidget {
                   const SizedBox(
                       width:
                           10), // Adjust the spacing between the two containers
-                  const Expanded(
+                  Expanded(
                     child: Center(
                       child: Text(
-                        'Phosphorus',
-                        style: TextStyle(
+                        LocaleData.info5.getString(context),
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -536,11 +544,11 @@ class ElementsPage extends StatelessWidget {
                   const SizedBox(
                       width:
                           10), // Adjust the spacing between the two containers
-                  const Expanded(
+                  Expanded(
                     child: Center(
                       child: Text(
-                        'Pottasium',
-                        style: TextStyle(
+                        LocaleData.info6.getString(context),
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -589,7 +597,7 @@ class ElementsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => const HomePage(),
                 ),
               );
               break;
@@ -666,6 +674,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
   final TextEditingController _ssidController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // ignore: unused_element, non_constant_identifier_names
   _BluetoothScanPageState() {
     fireRef = FirebaseDatabase.instance.ref(user);
   }
@@ -953,7 +962,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => const HomePage(),
                 ),
               );
               break;
@@ -1114,7 +1123,7 @@ class _HomeDetailsPageState extends State<HomeDetailsPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => const HomePage(),
                 ),
               );
               break;
@@ -1264,7 +1273,7 @@ class HistoryPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => const HomePage(),
                 ),
               );
               break;
